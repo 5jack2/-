@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>唐立裕 · 演示文稿</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;background:#f4f7f5;color:#2d3748;min-height:100vh}
+  .wrap{max-width:900px;margin:0 auto;padding:40px 24px}
+  .back{display:inline-flex;align-items:center;gap:6px;color:#5a8f75;font-weight:600;margin-bottom:24px;font-size:.9rem}
+  .back:hover{text-decoration:underline}
+  header{text-align:center;margin-bottom:48px}
+  header h1{font-size:clamp(1.6rem,4vw,2.2rem);font-weight:800;margin-bottom:8px}
+  header p{color:#718096;font-size:.95rem}
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px}
+  .card{
+    background:#fff;border-radius:18px;padding:28px;box-shadow:0 6px 24px rgba(0,0,0,.06);
+    border:1px solid rgba(0,0,0,.07);transition:transform .3s,box-shadow .3s;
+    display:flex;flex-direction:column;gap:14px;
+  }
+  .card:hover{transform:translateY(-4px);box-shadow:0 14px 40px rgba(0,0,0,.09)}
+  .card .cover{
+    aspect-ratio:16/9;border-radius:12px;background:linear-gradient(135deg,#5a8f75,#5a7a9c);
+    display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:1.4rem;
+    letter-spacing:.05em;text-align:center;padding:20px;
+  }
+  .card h2{font-size:1.1rem;margin-top:4px}
+  .card p{color:#718096;font-size:.88rem;line-height:1.6;flex:1}
+  .meta{display:flex;gap:12px;font-size:.8rem;color:#a0aec0;margin-bottom:8px}
+  .chips{display:flex;gap:8px;flex-wrap:wrap}
+  .chips span{background:rgba(90,143,117,.1);color:#5a8f75;padding:4px 12px;border-radius:999px;font-size:.8rem;font-weight:600}
+  .tip{margin-top:32px;padding:20px;background:rgba(90,143,117,.08);border-radius:12px;font-size:.85rem;color:#4a5568;text-align:center;line-height:1.7}
+  .tip b{color:#5a8f75}
+  .slide-preview{
+    margin:12px 0;border-radius:10px;overflow:hidden;border:1px solid rgba(0,0,0,.08);
+    background:#fff;aspect-ratio:16/9;display:flex;align-items:center;justify-content:center;
+    color:#5a8f75;font-weight:800;font-size:1.1rem;text-align:center;padding:20px;
+  }
+  @media (max-width:480px){
+    .wrap{padding:24px 16px}
+    .card{padding:20px}
+    .card .cover{font-size:1.1rem}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="../../index.html">← 返回主页</a>
+  <header>
+    <h1>📊 我的演示文稿</h1>
+    <p>两套自我介绍 PPT · 内容导览</p>
+  </header>
+
+  <div class="cards">
+    <!-- PPT 1 -->
+    <div class="card">
+      <div class="cover">大家好<br>我是唐立裕</div>
+      <h2>大家好，我是唐立裕</h2>
+      <div class="meta"><span>📄 约 34MB · 7 页</span></div>
+      <p>第一套自我介绍 PPT：简洁大方的封面、个人简介、能力标签与未来方向，适合初次认识时使用。</p>
+      <div class="chips"><span>自我介绍</span><span>简洁风</span><span>7 页</span></div>
+      <div class="slide-preview">
+        第1页 · 封面：大家好，我是唐立裕<br>
+        第2页 · 个人简介<br>
+        第3页 · 我的标签<br>
+        第4页 · 学习经历<br>
+        第5页 · 项目作品<br>
+        第6页 · 未来方向<br>
+        第7页 · 联系方式
+      </div>
+    </div>
+
+    <!-- PPT 2 -->
+    <div class="card">
+      <div class="cover">正在加载中的<br>大学生</div>
+      <h2>唐立裕：一个正在加载中的大学生</h2>
+      <div class="meta"><span>📄 约 54MB · 7 页</span></div>
+      <p>第二套更具个性的自我介绍：以「正在加载」为主题，突出 AI 训练师身份、技能标签与项目作品。</p>
+      <div class="chips"><span>主题风</span><span>AI 训练师</span><span>7 页</span></div>
+      <div class="slide-preview">
+        第1页 · 封面：正在加载中的大学生<br>
+        第2页 · 我的数据<br>
+        第3页 · 技能栈<br>
+        第4页 · AI 训练师认证<br>
+        第5页 · 项目作品<br>
+        第6页 · 荣誉证书<br>
+        第7页 · 加载完成
+      </div>
+    </div>
+  </div>
+
+  <div class="tip">
+    💡 PPT 文件较大（合计约 88MB），为保证手机端流畅浏览，暂不提供在线下载<br>
+    如需查看完整演示文稿，可联系 <b>邮箱</b> 获取源文件，或在电脑端访问下载
+  </div>
+</div>
+</body>
+</html>
