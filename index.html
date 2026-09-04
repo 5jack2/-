@@ -1,10 +1,12 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="description" content="唐立裕 Tang Liyu · 个人作品集 | 网络与新媒体 · AI 训练师认证 · 前端与小游戏开发">
 <meta name="theme-color" content="#08080f">
+<link rel="preload" href="assets/photo/profile.jpg" as="image" fetchpriority="high">
+<link rel="preload" href="assets/qrcode.jpg" as="image" fetchpriority="low">
 <title>唐立裕 Tang Liyu · 个人作品集</title>
 <style>
 /* ==========================================================
@@ -39,6 +41,7 @@
 
 /* ---------- 1. 基础重置 ---------- */
 *{margin:0;padding:0;box-sizing:border-box}
+img{max-width:100%;height:auto;display:block;object-fit:cover;image-rendering:optimizeQuality}
 html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
 body{
   font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei","Segoe UI",sans-serif;
@@ -517,6 +520,15 @@ footer b{color:var(--accent);font-weight:600}
   body,html{overflow-x:hidden}
   .proj-card p{font-size:.88rem}
   .c{min-width:0}
+  /* === 移动端性能降级：关闭消耗大的 CSS 动画 / 滤镜 === */
+  .orb,.glow-star,.meteor,.hero-kicker .pulse,.badge-float,.scroll-hint::after,.marquee-track,
+  .vision-card .v-bg{animation-play-state:paused!important;animation:none!important;}
+  .orb{filter:none!important;opacity:.35!important;}
+  .orb-planet::after{filter:none!important;}
+  .bg-texture{animation:none!important;opacity:.35!important;}
+  .cursor-dot,.cursor-ring{display:none!important;}
+  .vision-card:hover .v-bg{transform:none!important;}
+  .milestone-grid{grid-template-columns:1fr}
 }
 @media (max-width:360px){
   .marquee-item{width:170px;height:130px}
@@ -525,16 +537,26 @@ footer b{color:var(--accent);font-weight:600}
   .badge-float{padding:10px 14px;font-size:.78rem}
   /* === 更窄屏修复 === */
   .cert-grid{grid-template-columns:1fr}
+  .orb{opacity:.2!important;}
 }
 
-/* 触屏设备：禁用自定义鼠标指针 */
+/* 触屏设备：禁用自定义鼠标指针 + 全局性能降级（所有触摸设备=手机/平板） */
 @media (pointer:coarse){
   body{cursor:auto}
-  .cursor-dot{display:none!important}
+  .cursor-dot,.cursor-ring{display:none!important}
+  /* 触摸设备：粒子 canvas 不显示 */
+  #particleCanvas{opacity:.35!important;}
+  /* 触摸设备：关闭所有装饰位移动画，降低滤镜 */
+  .orb,.glow-star,.meteor,.hero-kicker .pulse,.badge-float,.scroll-hint::after,.marquee-track,
+  .vision-card .v-bg{animation-play-state:paused!important;animation:none!important;}
+  .orb{filter:none!important;opacity:.3!important;}
+  .bg-texture{opacity:.3!important;animation:none!important;}
+  .vision-card .v-bg{opacity:.28!important;}
 }
-/* 减少动态效果：暂停装饰动画 */
+/* 减少动态效果：暂停装饰动画 + 粒子 canvas */
 @media (prefers-reduced-motion:reduce){
   .bg-texture,.glow-star,.orb,.meteor,.hero-kicker .pulse,.badge-float,.scroll-hint::after,.marquee-track{animation:none!important}
+  #particleCanvas{display:none!important;}
 }
 </style>
 </head>
@@ -743,46 +765,12 @@ footer b{color:var(--accent);font-weight:600}
   </div>
 </section>
 
-<!-- ================= 04 成长轨迹 ================= -->
-<section id="milestones">
+<!-- ================= 04 项目（Bento） ================= -->
+<section id="projects">
   <div class="wrap">
     <div class="sec-ghost" aria-hidden="true">04</div>
     <div class="sec-head reveal">
-      <div class="sec-num">04 // MILESTONES</div>
-      <h2 class="sec-title">成长轨迹</h2>
-      <p class="sec-sub">每一步都算数，每一个作品都是能力的注脚。</p>
-    </div>
-    <div class="milestone-grid">
-      <div class="milestone-card reveal">
-        <div class="milestone-date">2024</div>
-        <h3>🚀 开启自学之旅</h3>
-        <p>从短视频运营到前端开发，系统学习 HTML / CSS / JavaScript，搭建出第一个属于自己的网页。</p>
-      </div>
-      <div class="milestone-card reveal d1">
-        <div class="milestone-date">2025</div>
-        <h3>🧠 AI 训练师双认证</h3>
-        <p>通过阿里达摩院人工智能训练师初级与高级认证，掌握数据标注管理、模型评估与训练流程设计。</p>
-      </div>
-      <div class="milestone-card reveal d2">
-        <div class="milestone-date">2025</div>
-        <h3>🎮 独立游戏开发</h3>
-        <p>使用原生 JavaScript + Canvas 从零开发坦克大战与飞机大战，具备完整碰撞检测与关卡系统。</p>
-      </div>
-      <div class="milestone-card reveal d3">
-        <div class="milestone-date">2026</div>
-        <h3>🎓 迈入大学校园</h3>
-        <p>入读天津农学院网络与新媒体专业，带着 28 份证书与 6+ 独立作品，开启人生新篇章。</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ================= 05 项目（Bento） ================= -->
-<section id="projects">
-  <div class="wrap">
-    <div class="sec-ghost" aria-hidden="true">05</div>
-    <div class="sec-head reveal">
-      <div class="sec-num">05 // PROJECTS</div>
+      <div class="sec-num">04 // PROJECTS</div>
       <h2 class="sec-title">项目经历</h2>
       <p class="sec-sub">每一张截图，都是一个真实运行过的作品。</p>
     </div>
@@ -871,9 +859,9 @@ footer b{color:var(--accent);font-weight:600}
 <!-- ================= 06 证书 ================= -->
 <section id="certs">
   <div class="wrap">
-    <div class="sec-ghost" aria-hidden="true">06</div>
+    <div class="sec-ghost" aria-hidden="true">05</div>
     <div class="sec-head reveal">
-      <div class="sec-num">06 // CERTIFICATIONS</div>
+      <div class="sec-num">05 // CERTIFICATIONS</div>
       <h2 class="sec-title">证书与荣誉</h2>
       <p class="sec-sub">28 份证书与荣誉记录，点击任意证书可放大查看。</p>
     </div>
@@ -900,12 +888,12 @@ footer b{color:var(--accent);font-weight:600}
   </div>
 </section>
 
-<!-- ================= 07 地域风情 ================= -->
+<!-- ================= 06 地域风情 ================= -->
 <section id="cities">
   <div class="wrap">
-    <div class="sec-ghost" aria-hidden="true">07</div>
+    <div class="sec-ghost" aria-hidden="true">06</div>
     <div class="sec-head reveal">
-      <div class="sec-num">07 // CITIES</div>
+      <div class="sec-num">06 // CITIES</div>
       <h2 class="sec-title">从广西到天津</h2>
       <p class="sec-sub">地域风情，是我大学四年最想用脚步去读懂的一门「行走的课」。</p>
     </div>
@@ -943,12 +931,12 @@ footer b{color:var(--accent);font-weight:600}
   </div>
 </section>
 
-<!-- ================= 08 生活 ================= -->
+<!-- ================= 07 生活 ================= -->
 <section id="life">
   <div class="wrap">
-    <div class="sec-ghost" aria-hidden="true">08</div>
+    <div class="sec-ghost" aria-hidden="true">07</div>
     <div class="sec-head reveal">
-      <div class="sec-num">08 // BEYOND WORK</div>
+      <div class="sec-num">07 // BEYOND WORK</div>
       <h2 class="sec-title">工作之外</h2>
       <p class="sec-sub">生活是作品的素材库。</p>
     </div>
@@ -959,7 +947,7 @@ footer b{color:var(--accent);font-weight:600}
     </div>
 
     <div class="sec-head reveal" style="margin-bottom:24px">
-      <div class="sec-num">08.1 // MOMENTS</div>
+      <div class="sec-num">07.1 // MOMENTS</div>
       <h2 class="sec-title" style="font-size:clamp(1.4rem,3vw,1.9rem)">精彩瞬间</h2>
       <p class="sec-sub">悬浮暂停 · 点击放大 · 每一帧都值得被记录。</p>
     </div>
@@ -1021,7 +1009,7 @@ footer b{color:var(--accent);font-weight:600}
     </div>
 
     <div class="sec-head reveal" style="margin-bottom:24px;margin-top:38px">
-      <div class="sec-num">08.2 // GAME MOMENTS</div>
+      <div class="sec-num">07.2 // GAME MOMENTS</div>
       <h2 class="sec-title" style="font-size:clamp(1.4rem,3vw,1.9rem)">游戏战绩</h2>
       <p class="sec-sub">从玩家到开发者，用代码还原经典。</p>
     </div>
@@ -1133,13 +1121,18 @@ footer b{color:var(--accent);font-weight:600}
   var canvas=document.getElementById('particleCanvas');
   if(!canvas)return;
   var ctx=canvas.getContext('2d');
-  var W=0,H=0,DPR=Math.min(devicePixelRatio||1,2);
+  var W=0,H=0,DPR_ORIG=devicePixelRatio||1;
   var reduced=matchMedia('(prefers-reduced-motion:reduce)').matches;
-  var mobile=innerWidth<768;
-  var COUNT=mobile?36:64;      /* 数量下调：桌面 64 / 移动 36 */
-  var LINK=mobile?90:120;      /* 连线距离 */
-  var NEIGHBOR=4;              /* 每粒子只与索引相邻 4 个比距离 → O(n×4) 替代 O(n²) */
-  var LINK_ON=!mobile;         /* 移动端关闭连线（小屏看不清，纯赚性能） */
+  var isMobile=matchMedia('(max-width: 768px)').matches || matchMedia('(pointer: coarse)').matches;
+  var isLowEnd=matchMedia('(max-width: 480px)').matches;
+  /* ---- 移动端降级 ---- */
+  var DPR=isLowEnd?1:isMobile?1:Math.min(DPR_ORIG,1.75);              /* 手机DPR固定1，桌面最高1.75 */
+  var COUNT=isLowEnd?0:isMobile?14:reduced?18:60;                  /* 超低端=0，手机=14，桌面=60 */
+  var LINK=isMobile?0:100;                                          /* 移动端完全关闭连线 */
+  var NEIGHBOR=isMobile?0:4;                                        /* 无连线直接省循环 */
+  var LINK_ON=!isMobile && !reduced;
+  var FPS_TARGET=isMobile?28:60;                                    /* 移动端28fps / 桌面60fps */
+  var FRAME_MS=1000/FPS_TARGET;
   var ps=[];
   var spr=document.createElement('canvas');spr.width=spr.height=48;
   var sc=spr.getContext('2d');
@@ -1148,6 +1141,10 @@ footer b{color:var(--accent);font-weight:600}
   g.addColorStop(0.35,'rgba(200,220,255,.5)');
   g.addColorStop(1,'rgba(200,220,255,0)');
   sc.fillStyle=g;sc.fillRect(0,0,48,48);
+
+  /* 移动端完全隐藏 particleCanvas，改降成纯 CSS 轻 bg，减轻 fillRate */
+  if(isLowEnd){ canvas.style.display='none'; }
+  if(isMobile){ canvas.style.opacity='0.55'; }
 
   function resize(){
     W=innerWidth;H=innerHeight;
@@ -1166,14 +1163,17 @@ footer b{color:var(--accent);font-weight:600}
   }
   for(var i=0;i<COUNT;i++)ps.push(mk(true));
 
-  /* 描边样式只设一次：透明度交给 globalAlpha（数字），杜绝每帧字符串拼接 */
   ctx.strokeStyle='rgba(150,180,225,1)';
   ctx.lineWidth=1;
 
   var t0=performance.now();
-  var running=!reduced;
+  var running=!reduced && COUNT>0;
+  var lastFrame=0;
   function frame(now){
     if(!running)return;
+    var dt=now-lastFrame;
+    if(dt<FRAME_MS){requestAnimationFrame(frame);return;}   /* 限帧 */
+    lastFrame=now-(dt%FRAME_MS);
     var t=(now-t0)*.001;
     ctx.clearRect(0,0,W,H);
     for(i=0;i<COUNT;i++){
@@ -1202,11 +1202,12 @@ footer b{color:var(--accent);font-weight:600}
     requestAnimationFrame(frame);
   }
   if(running)requestAnimationFrame(frame);
-  /* 页面切后台时彻底停帧，切回来再续（省电省 GPU） */
   document.addEventListener('visibilitychange',function(){
     if(document.hidden){running=false;}
-    else if(!reduced&&!running){running=true;requestAnimationFrame(frame);}
+    else if(!reduced && COUNT>0 && !running){running=true;lastFrame=performance.now();requestAnimationFrame(frame);}
   });
+  /* 横竖屏切换：重新初始化移动端/桌面参数 */
+  window.addEventListener('orientationchange',function(){setTimeout(function(){location.reload();},300);});
 })();
 
 /* ---------- 1.5 跑马灯：滚出视口自动暂停（看不见的动画不烧 GPU） ---------- */
@@ -1313,11 +1314,30 @@ document.querySelectorAll('.skill-card').forEach(function(c){barIO.observe(c);})
   var grid=document.getElementById('certGrid');
   if(!grid)return;
   var html='';
+  /* 加载失败占位：纯色渐变，避免用户看到破图 */
+  var onerrorFallback = "this.onerror=null;this.removeAttribute('srcset');this.style.background='linear-gradient(135deg,rgba(212,168,83,.12),rgba(94,234,214,.08))';this.style.minHeight='60px';this.alt='证书图片';this.removeAttribute('src');";
   for(var i=1;i<=28;i++){
     var n=String(i).padStart(2,'0');
-    html+='<div class="cert-item" data-lb="cert"><img src="assets/certs/cert-'+n+'.jpg" alt="证书 '+i+'" loading="lazy" decoding="async"><div class="veil"><span>证书 #'+n+'</span><span>点击查看</span></div></div>';
+    html+='<div class="cert-item" data-lb="cert"><img src="assets/certs/cert-'+n+'.jpg" alt="证书 '+i+'" loading="lazy" decoding="async" onerror="'+onerrorFallback+'" style="width:100%;height:auto"><div class="veil"><span>证书 #'+n+'</span><span>点击查看</span></div></div>';
   }
   grid.innerHTML=html;
+})();
+
+/* ---------- 8.5 全局图片加载失败降级（所有静态 / 灯箱 / 项目 / 生活 img） ---------- */
+(function(){
+  var fallback = function(){
+    try{
+      this.onerror=null;
+      this.removeAttribute('srcset');
+      this.style.background='linear-gradient(135deg,rgba(212,168,83,.14),rgba(94,234,214,.08))';
+      this.style.minHeight='40px';
+      this.style.border='1px dashed rgba(255,255,255,.08)';
+      this.removeAttribute('src');
+    }catch(e){}
+  };
+  document.querySelectorAll('img').forEach(function(im){
+    if(!im.onerror) im.onerror=fallback;
+  });
 })();
 
 /* ---------- 9. 灯箱 ---------- */
