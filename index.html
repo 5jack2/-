@@ -60,13 +60,14 @@ body::before{
     radial-gradient(700px 550px at 84% 86%, rgba(139,123,216,.12), transparent 62%);
 }
 .bg-texture{
-  position:fixed;inset:-12%;z-index:-3;pointer-events:none;
+  position:fixed;inset:-5%;z-index:-3;pointer-events:none;
   background:url('assets/decor/nebula.jpg') center/cover no-repeat;
   opacity:.26;animation:nebulaDrift 30s ease-in-out infinite alternate;
 }
+/* 漂移只做纯位移（去掉了 scale 放大，GPU 不用每帧重采样大纹理） */
 @keyframes nebulaDrift{
-  0%{transform:translate3d(-3%,-2%,0) scale(1.1)}
-  100%{transform:translate3d(3%,2%,0) scale(1.1)}
+  0%{transform:translate3d(-2%,-1.2%,0)}
+  100%{transform:translate3d(2%,1.2%,0)}
 }
 #stars{position:fixed;left:0;top:0;width:1px;height:1px;z-index:-2;pointer-events:none}
 #particleCanvas{position:fixed;inset:0;z-index:-1;pointer-events:none}
@@ -77,7 +78,7 @@ body::before{
   width:150px;height:150px;top:9%;right:7%;
   background:
     radial-gradient(circle at 32% 30%, #fffdf4 0%, #f4e8c8 22%, #e0cfa0 45%, #b09a68 72%, #8a7748 100%);
-  box-shadow:0 0 100px rgba(255,238,190,.55),0 0 200px rgba(255,238,190,.25),inset -18px -18px 44px rgba(90,70,40,.45),inset 10px 10px 30px rgba(255,255,255,.3);
+  box-shadow:0 0 90px rgba(255,238,190,.5),inset -18px -18px 44px rgba(90,70,40,.45),inset 10px 10px 30px rgba(255,255,255,.3);
   animation:orbFloat1 15s ease-in-out infinite;
 }
 .orb-planet{
@@ -89,7 +90,7 @@ body::before{
 .orb-planet::after{
   content:"";position:absolute;left:50%;top:50%;width:200px;height:62px;
   border:3px solid rgba(255,220,150,.5);border-radius:50%;
-  transform:translate(-50%,-50%) rotate(-22deg);box-shadow:0 0 22px rgba(255,220,150,.35);
+  transform:translate(-50%,-50%) rotate(-22deg);
 }
 .orb-blue{
   width:78px;height:78px;top:44%;left:3%;
@@ -377,7 +378,7 @@ section{padding:clamp(96px,13vw,170px) 0;position:relative}
 .moment-title::before{content:"";width:4px;height:18px;border-radius:4px;background:linear-gradient(var(--accent-2),var(--accent))}
 .moment-title .tag{font-size:.74rem;color:var(--accent);font-weight:700;letter-spacing:.1em}
 .marquee{overflow:hidden;position:relative;-webkit-mask-image:linear-gradient(to right,transparent,#000 8%,#000 92%,transparent);mask-image:linear-gradient(to right,transparent,#000 8%,#000 92%,transparent)}
-.marquee-track{display:flex;gap:16px;width:max-content;animation:marquee 34s linear infinite}
+.marquee-track{display:flex;gap:16px;width:max-content;animation:marquee 34s linear infinite;will-change:transform}
 .marquee:hover .marquee-track{animation-play-state:paused}
 .marquee-rev .marquee-track{animation-direction:reverse}
 @keyframes marquee{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
@@ -1095,15 +1096,18 @@ footer b{color:var(--accent);font-weight:600}
   addEventListener('resize',function(){clearTimeout(t);t=setTimeout(build,250);});
 })();
 
-/* ---------- 1. 移动粒子（清晰亮星 + 连线，更快更明显） ---------- */
+/* ---------- 1. 移动粒子（清晰亮星 + 连线 · 性能优化版） ---------- */
 (function(){
   var canvas=document.getElementById('particleCanvas');
   if(!canvas)return;
   var ctx=canvas.getContext('2d');
   var W=0,H=0,DPR=Math.min(devicePixelRatio||1,2);
   var reduced=matchMedia('(prefers-reduced-motion:reduce)').matches;
-  var COUNT=innerWidth<768?55:100;
-  var LINK=innerWidth<768?100:130;
+  var mobile=innerWidth<768;
+  var COUNT=mobile?36:64;      /* 数量下调：桌面 64 / 移动 36 */
+  var LINK=mobile?90:120;      /* 连线距离 */
+  var NEIGHBOR=4;              /* 每粒子只与索引相邻 4 个比距离 → O(n×4) 替代 O(n²) */
+  var LINK_ON=!mobile;         /* 移动端关闭连线（小屏看不清，纯赚性能） */
   var ps=[];
   var spr=document.createElement('canvas');spr.width=spr.height=48;
   var sc=spr.getContext('2d');
@@ -1130,20 +1134,28 @@ footer b{color:var(--accent);font-weight:600}
   }
   for(var i=0;i<COUNT;i++)ps.push(mk(true));
 
+  /* 描边样式只设一次：透明度交给 globalAlpha（数字），杜绝每帧字符串拼接 */
+  ctx.strokeStyle='rgba(150,180,225,1)';
+  ctx.lineWidth=1;
+
   var t0=performance.now();
+  var running=!reduced;
   function frame(now){
+    if(!running)return;
     var t=(now-t0)*.001;
     ctx.clearRect(0,0,W,H);
     for(i=0;i<COUNT;i++){
       var p=ps[i];p.x+=p.vx;p.y+=p.vy;
       if(p.y<-30||p.x<-30||p.x>W+30)ps[i]=mk(false);
     }
-    ctx.lineWidth=1;
-    for(i=0;i<COUNT;i++)for(var j=i+1;j<COUNT;j++){
-      var a=ps[i],b=ps[j],dx=a.x-b.x,dy=a.y-b.y,d2=dx*dx+dy*dy;
-      if(d2<LINK*LINK){
-        ctx.strokeStyle='rgba(150,180,225,'+((1-Math.sqrt(d2)/LINK)*.3).toFixed(3)+')';
-        ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke();
+    if(LINK_ON){
+      for(i=0;i<COUNT;i++)for(var j=1;j<=NEIGHBOR;j++){
+        var k=i+j;if(k>=COUNT)break;
+        var a=ps[i],b=ps[k],dx=a.x-b.x,dy=a.y-b.y,d2=dx*dx+dy*dy;
+        if(d2<LINK*LINK){
+          ctx.globalAlpha=(1-Math.sqrt(d2)/LINK)*.3;
+          ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke();
+        }
       }
     }
     for(i=0;i<COUNT;i++){
@@ -1155,9 +1167,26 @@ footer b{color:var(--accent);font-weight:600}
       ctx.beginPath();ctx.arc(p2.x,p2.y,p2.r*.75,0,6.28);ctx.fill();
     }
     ctx.globalAlpha=1;
-    if(!reduced)requestAnimationFrame(frame);
+    requestAnimationFrame(frame);
   }
-  requestAnimationFrame(frame);
+  if(running)requestAnimationFrame(frame);
+  /* 页面切后台时彻底停帧，切回来再续（省电省 GPU） */
+  document.addEventListener('visibilitychange',function(){
+    if(document.hidden){running=false;}
+    else if(!reduced&&!running){running=true;requestAnimationFrame(frame);}
+  });
+})();
+
+/* ---------- 1.5 跑马灯：滚出视口自动暂停（看不见的动画不烧 GPU） ---------- */
+(function(){
+  if(!('IntersectionObserver' in window))return;
+  var io=new IntersectionObserver(function(es){
+    es.forEach(function(e){
+      var t=e.target.querySelector('.marquee-track');
+      if(t)t.style.animationPlayState=e.isIntersecting?'running':'paused';
+    });
+  },{rootMargin:'120px'});
+  document.querySelectorAll('.marquee').forEach(function(m){io.observe(m);});
 })();
 
 /* ---------- 2. 自定义鼠标指针（单点） ---------- */
