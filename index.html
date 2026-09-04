@@ -401,6 +401,7 @@ section{padding:clamp(96px,13vw,170px) 0;position:relative}
 .game-stat b{font-size:1.4rem;color:var(--accent);display:block;line-height:1.1}
 .game-stat span{font-size:.74rem;color:var(--muted)}
 
+
 /* ---------- 16. 联系 ---------- */
 .contact{background:linear-gradient(140deg,rgba(212,168,83,.07),rgba(94,234,212,.04),rgba(139,123,216,.05));border-radius:clamp(20px,4vw,32px);border:1px solid var(--border);color:var(--ink);padding:clamp(36px,6vw,72px) clamp(24px,5vw,64px);position:relative;overflow:hidden;box-shadow:var(--shadow)}
 .contact-grid{display:grid;grid-template-columns:1.35fr .65fr;gap:clamp(28px,5vw,56px);align-items:center;position:relative;z-index:1}
@@ -413,6 +414,11 @@ a.contact-item:hover{background:var(--surface-hover);border-color:rgba(212,168,8
 .contact-item .em{font-size:1.3rem;color:var(--accent)}
 .contact-item .k{font-size:.74rem;color:var(--muted);margin:0;letter-spacing:.1em;text-transform:none}
 .contact-item .v{font-weight:700;font-size:.95rem;word-break:break-all;color:var(--ink)}
+/* ---------- 05.1 愿景卡片（带背景图） ---------- */
+.vision-card .v-bg{position:absolute;inset:0;z-index:0;background-size:cover;background-position:center;opacity:.42;transition:opacity .5s,transform .6s}
+.vision-card:hover .v-bg{opacity:.68;transform:scale(1.06)}
+.vision-card::after{content:"";position:absolute;inset:0;z-index:0;background:linear-gradient(180deg,rgba(8,8,15,.22) 0%,rgba(8,8,15,.52) 45%,rgba(8,8,15,.94) 100%)}
+.vision-card .b-inner{z-index:1;justify-content:flex-end;padding-top:clamp(46px,6vw,72px)}
 .qr-wrap{display:flex;justify-content:center}
 .qr-card{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:20px 20px 16px;text-align:center;cursor:zoom-in;transition:transform .3s,border-color .3s;position:relative;overflow:hidden;box-shadow:var(--shadow)}
 .qr-card:hover{transform:translateY(-5px);border-color:rgba(212,168,83,.3)}
@@ -467,6 +473,13 @@ footer b{color:var(--accent);font-weight:600}
   .orb-planet::after{width:150px;height:46px}
   .orb-blue{width:56px;height:56px}
   .sec-ghost{font-size:clamp(5rem,22vw,9rem);top:-10px}
+  /* === 平板档溢出修复 === */
+  .cert-grid{grid-template-columns:repeat(auto-fill,minmax(130px,1fr))}
+  .cert-featured{grid-template-columns:repeat(auto-fit,minmax(180px,1fr))}
+  .milestone-grid{grid-template-columns:repeat(auto-fit,minmax(160px,1fr))}
+  .life-hobbies{grid-template-columns:repeat(auto-fit,minmax(170px,1fr))}
+  .contact-items{grid-template-columns:1fr}
+  body,html{overflow-x:hidden}
 }
 @media (max-width:600px){
   .bento .c{grid-column:span 12!important}
@@ -492,12 +505,26 @@ footer b{color:var(--accent);font-weight:600}
   .orb-planet{width:64px;height:64px}
   .orb-planet::after{width:110px;height:34px}
   .orb-blue{width:42px;height:42px;opacity:.7}
+  /* === 移动端溢出修复 === */
+  .cert-grid{grid-template-columns:repeat(2,1fr);gap:10px}
+  .cert-featured{grid-template-columns:1fr}
+  .milestone-grid{grid-template-columns:1fr}
+  .life-hobbies{grid-template-columns:1fr}
+  .contact-items{grid-template-columns:1fr}
+  .wrap{padding:0 14px}
+  .marquee-track{width:max-content!important}
+  .marquee{width:100%;overflow:hidden}
+  body,html{overflow-x:hidden}
+  .proj-card p{font-size:.88rem}
+  .c{min-width:0}
 }
 @media (max-width:360px){
   .marquee-item{width:170px;height:130px}
   .stat-card{min-width:84px;padding:12px 14px}
   .hero h1{font-size:2.2rem}
   .badge-float{padding:10px 14px;font-size:.78rem}
+  /* === 更窄屏修复 === */
+  .cert-grid{grid-template-columns:1fr}
 }
 
 /* 触屏设备：禁用自定义鼠标指针 */
@@ -593,7 +620,8 @@ footer b{color:var(--accent);font-weight:600}
       <p class="sec-sub">五年后回头看，希望这四年不是「混过来」的，而是被一个个清晰的目标照亮过的。</p>
     </div>
     <div class="bento">
-      <div class="c b-span-7 b-tall reveal d1">
+      <div class="c b-span-6 b-tall vision-card reveal d1">
+        <div class="v-bg" style="background-image:url('assets/vision/learn.jpg')"></div>
         <div class="b-inner">
           <span class="em">📚</span>
           <h3>学习更多知识</h3>
@@ -601,21 +629,16 @@ footer b{color:var(--accent);font-weight:600}
           <div class="chips"><span class="chip">专业深耕</span><span class="chip">跨学科</span><span class="chip">AI 赋能</span></div>
         </div>
       </div>
-      <div class="c b-span-5 reveal d2">
+      <div class="c b-span-6 b-tall vision-card reveal d2">
+        <div class="v-bg" style="background-image:url('assets/vision/horizon.jpg')"></div>
         <div class="b-inner">
           <span class="em">🌍</span>
           <h3>开拓眼界</h3>
           <p>走出舒适圈，去接触不同的观点、不同的人、不同的活法，让认知的边界不断被打破。</p>
         </div>
       </div>
-      <div class="c b-span-5 reveal d3">
-        <div class="b-inner">
-          <span class="em">🗺️</span>
-          <h3>了解地域风情</h3>
-          <p>从广西到天津，用脚步丈量南北差异，读懂每一座城市背后的山水、方言与烟火。</p>
-        </div>
-      </div>
-      <div class="c b-span-7 reveal d4">
+      <div class="c b-span-6 vision-card reveal d3">
+        <div class="v-bg" style="background-image:url('assets/vision/skills.jpg')"></div>
         <div class="b-inner">
           <span class="em">🎯</span>
           <h3>学会更多学习技能</h3>
@@ -623,7 +646,16 @@ footer b{color:var(--accent);font-weight:600}
           <div class="chips"><span class="chip">学习方法论</span><span class="chip">知识管理</span><span class="chip">输出驱动</span></div>
         </div>
       </div>
-      <div class="c b-span-12 reveal d5">
+      <div class="c b-span-6 vision-card reveal d4">
+        <div class="v-bg" style="background-image:url('assets/vision/culture.jpg')"></div>
+        <div class="b-inner">
+          <span class="em">🗺️</span>
+          <h3>了解地域风情</h3>
+          <p>从广西到天津，用脚步丈量南北差异，读懂每一座城市背后的山水、方言与烟火。</p>
+        </div>
+      </div>
+      <div class="c b-span-12 vision-card reveal d5">
+        <div class="v-bg" style="background-image:url('assets/vision/friends.jpg')"></div>
         <div class="b-inner">
           <span class="em">🤝</span>
           <h3>认识更多朋友</h3>
@@ -755,7 +787,7 @@ footer b{color:var(--accent);font-weight:600}
       <p class="sec-sub">每一张截图，都是一个真实运行过的作品。</p>
     </div>
     <div class="bento">
-      <a class="c b-span-7 b-tall reveal proj-card" href="https://www.coze.cn/" target="_blank" rel="noopener" aria-label="打开 Coze AI 资讯推送">
+      <a class="c b-span-7 reveal proj-card" href="https://www.coze.cn/" target="_blank" rel="noopener" aria-label="打开 Coze AI 资讯推送">
         <div class="proj-shot">
           <span class="shot-tag">WORKFLOW</span>
           <img src="assets/projects/coze-ai.jpg" alt="Coze AI 资讯推送运行截图" loading="lazy" decoding="async">
@@ -1039,15 +1071,15 @@ footer b{color:var(--accent);font-weight:600}
           <h2>欢迎随时联系我</h2>
           <p>无论是 AI 项目合作、新媒体内容共创，还是单纯聊聊技术与创意，都欢迎随时找我。</p>
           <div class="contact-items">
-            <div class="contact-item"><span class="em">📱</span><div><div class="k">电话</div><div class="v">151-0785-2175</div></div></div>
-            <div class="contact-item"><span class="em">💬</span><div><div class="k">微信</div><div class="v">同手机号</div></div></div>
+            <div class="contact-item"><span class="em">📱</span><div><div class="k">电话</div><div class="v">191 1002 4816</div></div></div>
+            <div class="contact-item"><span class="em">💬</span><div><div class="k">微信</div><div class="v">191 1002 4816</div></div></div>
             <a class="contact-item" href="mailto:2966200953@qq.com"><span class="em">✉️</span><div><div class="k">邮箱</div><div class="v">2966200953@qq.com</div></div></a>
             <div class="contact-item"><span class="em">📍</span><div><div class="k">坐标</div><div class="v">广西 · 即将前往天津</div></div></div>
           </div>
         </div>
         <div class="qr-wrap">
           <figure class="qr-card" data-lb="qr" title="点击放大二维码">
-            <img src="assets/qrcode.png" alt="唐立裕的微信二维码" loading="lazy" decoding="async">
+            <img src="assets/qrcode.jpg" alt="唐立裕的微信二维码" loading="lazy" decoding="async">
             <div class="qr-tip">扫码添加微信<br><b>与我建立连接</b></div>
           </figure>
         </div>
@@ -1368,3 +1400,8 @@ document.addEventListener('error',function(e){
 </script>
 </body>
 </html>
+
+
+
+
+

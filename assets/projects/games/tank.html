@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
@@ -29,7 +29,7 @@ body{
 /* HUD 信息栏 */
 #hud{
   display:flex;gap:18px;justify-content:center;align-items:center;
-  width:520px;margin-bottom:8px;
+  width:100%;max-width:520px;margin-bottom:8px;
   padding:8px 16px;
   background:rgba(5,5,20,0.85);
   border:1px solid rgba(0,229,255,0.3);
@@ -52,7 +52,7 @@ body{
 
 /* Boss 血条 */
 #bossBar{
-  width:520px;margin-bottom:8px;
+  width:100%;max-width:520px;margin-bottom:8px;
   padding:6px 12px;
   background:rgba(20,0,30,0.85);
   border:1px solid rgba(255,0,255,0.4);
@@ -328,6 +328,24 @@ body{
   letter-spacing:3px;
   z-index:60;
   pointer-events:none;
+}
+
+/* === 移动端适配补丁 === */
+@media (max-width: 560px) {
+  #gameWrap { padding: 8px; transform-origin: top center; }
+  #hud { gap: 10px; padding: 6px 10px; font-size: 11px; }
+  .hud-val { font-size: 14px; }
+  #bossBar { padding: 4px 8px; }
+}
+@media (max-width: 420px) {
+  #gameWrap { padding: 4px; }
+  #hud { gap: 6px; font-size: 10px; flex-wrap: wrap; }
+  .hud-val { font-size: 12px; }
+  .hud-divider { display: none; }
+  #bossBar { font-size: 10px; }
+}
+@media (max-height: 700px) {
+  #gameWrap { padding: 6px; }
 }
 </style>
 </head>
