@@ -8,7 +8,8 @@
 /* ==================== 全局重置与基础样式 ==================== */
 *{margin:0;padding:0;box-sizing:border-box}
 html,body{
-  width:100%;height:100%;overflow:hidden;
+  width:100%;height:100%;overflow:hidden;overflow-x:auto;
+  canvas{max-width:100%;height:auto!important}
   background:#020208;
   font-family:'Courier New',monospace;
   user-select:none;
@@ -61,7 +62,8 @@ body{
 }
 #bossBar.show{display:block}
 .boss-bar-label{color:#ff00ff;font-size:12px;font-weight:bold;letter-spacing:2px;margin-bottom:3px;text-shadow:0 0 8px rgba(255,0,255,0.6)}
-.boss-bar-track{height:14px;background:rgba(0,0,0,0.5);border:1px solid rgba(255,0,255,0.3);border-radius:2px;overflow:hidden;position:relative}
+.boss-bar-track{height:14px;background:rgba(0,0,0,0.5);border:1px solid rgba(255,0,255,0.3);border-radius:2px;overflow:hidden;overflow-x:auto;
+  canvas{max-width:100%;height:auto!important}position:relative}
 .boss-bar-fill{
   height:100%;
   background:linear-gradient(90deg, #ff00ff, #ff66ff, #ff00ff);
